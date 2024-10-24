@@ -1,0 +1,36 @@
+services:
+  postgres-node1:
+    container_name: postgres-node-1
+    image: 'docker.io/bitnami/postgresql:15-debian-11'
+    ports:
+      - '5435:5432'
+    volumes:
+      - 'postgres_node1_data:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_PGAUDIT_LOG=READ,WRITE
+      - POSTGRESQL_LOG_HOSTNAME=true
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=database
+      - POSTGRESQL_EXTRA_FLAGS=-c wal_level=logical -c max_replication_slots=10 -c max_wal_senders=10
+
+  postgres-node2:
+    container_name: postgres-node-2
+    image: 'docker.io/bitnami/postgresql:15-debian-11'
+    ports:
+      - '5436:5432'
+    volumes:
+      - 'postgres_node2_data:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_PGAUDIT_LOG=READ,WRITE
+      - POSTGRESQL_LOG_HOSTNAME=true
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=database
+      - POSTGRESQL_EXTRA_FLAGS=-c wal_level=logical -c max_replication_slots=10 -c max_wal_senders=10
+
+volumes:
+  postgres_node1_data:
+    driver: local
+  postgres_node2_data:
+    driver: local
